@@ -2,12 +2,11 @@
 using namespace std;
 using ll = long long;
 ll n, e;
-vector<ll> g[100];
+vector<ll> g[101];
 bool vis[101];
 
 void dfs(ll n){
 	vis[n] = true;
-	cout << n << endl;
 	for(auto u: g[n]){
 		if(!vis[u]) dfs(u);
 	}
