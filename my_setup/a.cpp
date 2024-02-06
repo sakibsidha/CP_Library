@@ -15,7 +15,6 @@ template<class T>
 using indexed_set = tree<T,null_type,less<T>,rb_tree_tag,
 tree_order_statistics_node_update>;
 #define pb push_back
-#define mp make_pair
 #define fi first
 #define se second
 #define ins insert
