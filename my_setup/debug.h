@@ -1,8 +1,4 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 // credit to errichto & radewoosh
-
 #define sim template < class c 
 #define ris return * this
 #define dor > debug & operator <<
