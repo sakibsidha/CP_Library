@@ -18,6 +18,6 @@ void pre_nCr(){
 // non-prime mod, low constraints
 ll rec(ll n, ll k){
 	if(k==0 || k==n) return 1LL;
-	if(dp[n][k] != -1) return dp[{n,k}];
+	if(dp[n][k] != -1) return dp[n][k];
 	return dp[n][k] = rec(n-1,k-1) + rec(n-1,k);
 }
