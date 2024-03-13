@@ -1,69 +1,88 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool done(int groups[], int n){
+int n, mx = 0, capacity;
+vector<bool> taken;
+vector<int> ans;
+
+bool done(){
 	for(int i = 0; i < n; ++i){
-		if(groups[i] != 0) return false;
+		if(taken[i]==false){
+			return false;
+		}
 	}
 	return true;
 }
 
-int find_mx(int groups[], int n, int capacity){
-	int mx = 0;
-	for(int j = 0; j < n; ++j){
-		for(int k = 0; k < n; ++k){
-			if(k == j || groups[j]==0 || groups[k]==0) continue; // ignoring the combinations of group that are empty
-			else{
-				if(groups[j] + groups[k] <= capacity){
-					mx = max(mx, groups[j] + groups[k]);
-				}
-			}
+void BT(vector<int>& groups, vector<int>& cur, int idx, int sum){
+	if(idx==n){
+		if(sum > mx){
+			mx = sum;
+			ans = cur; // store the current subset to ans
 		}
+		return;
 	}
-	return mx;
+	if(taken[idx]==false){ // if the group is not taken yet
+		if(sum + groups[idx] <= capacity){
+			// take
+			cur.push_back(idx);
+			BT(groups, cur, idx + 1, sum + groups[idx]);
+			cur.pop_back();
+			
+			// not take
+			BT(groups, cur, idx + 1, sum);
+		}
+		else BT(groups, cur, idx + 1, sum);
+	}
+	else BT(groups, cur, idx+1, sum);
 }
 
-int main(){
-	int n; cin >> n;
-	int groups[n];
+void solve(){
+	cin >> n;
+	vector<int> groups(n);
 	for(int i = 0; i < n; ++i){
 		cin >> groups[i];
 	}
-	int bus[n] = {0};
-	int capacity; cin >> capacity;
+	cin >> capacity;
+	vector<int> bus(n); // taking n buses initially
+	taken.resize(n);
 	for(int i = 0; i < n; ++i){
-		int mx = find_mx(groups, n, capacity); // find the maximum possible sum that we can achieve with the remaining groups
-		int f = 0;
-		for(int j = 0; j < n; ++j){
-			if(f) break;
-			for(int k = 0; k < n; ++k){
-				if(k == j || groups[j]==0 || groups[k]==0) continue; // ignoring the combinations of group that are empty
-				else{
-					if(groups[j] + groups[k] == mx){ // we found the two groups j & k that will give us the maximum sum
-						bus[i] = mx; // set the answer for current bus to mx  
-						groups[j] = groups[k] = 0; // mark the j & k group as zero, we won't be using them in future combinations
-						f = 1; break; // break the both loop
-					}
-				}
-			}
+		vector<int> cur;
+		/* the backtrack funtion will set "mx" to the maximum possible subset sum
+		   that is less than or equal to capacity, while ans store the subset for which
+		   this happens. */
+		BT(groups, cur, 0, 0);
+		bus[i] = mx;
+		mx = 0;
+		for(int j = 0; j < ans.size(); ++j){
+			taken[ans[j]] = true; // marking all the groups that has been put in the bus already
 		}
-		if(done(groups, n)) break; // check if all groups are empty, if so, we reached the end
+		if(done()==true){
+			break; // checking if all the groups are marked, we reached the end then
+		} 
 	}
-	cout << "All buses: ";
+	cout << "Buses: ";
 	for(int i = 0; i < n; ++i){
 		cout << bus[i] << " ";
 	}
 	cout << "\n";
 	int cnt = 0, waste = 0;
 	for(int i = 0; i < n; ++i){
-		if(bus[i]==0){
-			break;
-		}
+		if(bus[i]==0) break;
 		else{
-			waste += (capacity - bus[i]);
 			cnt++;
+			waste += (capacity - bus[i]);
 		}
 	}
-	cout << "Total number of Bus required: " << cnt << "\n";
+	cout << "Total Bus required: " << cnt << "\n";
 	cout << "Total waste: " << waste << "\n";
+}
+
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	solve();
+
+	return 0;
 }
