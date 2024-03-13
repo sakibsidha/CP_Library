@@ -18,7 +18,7 @@ void BT(vector<int>& groups, vector<int>& cur, int idx, int sum){
 	if(idx==n){
 		if(sum > mx){
 			mx = sum;
-			ans = cur; // store the current subset to ans
+			ans = cur; // store the current subset, that gave the best maximum, to ans.
 		}
 		return;
 	}
@@ -44,7 +44,7 @@ void solve(){
 		cin >> groups[i];
 	}
 	cin >> capacity;
-	vector<int> bus(n); // taking n buses initially
+	vector<int> bus(n); // taking n buses initially.
 	taken.resize(n);
 	for(int i = 0; i < n; ++i){
 		vector<int> cur;
@@ -55,10 +55,10 @@ void solve(){
 		bus[i] = mx;
 		mx = 0;
 		for(int j = 0; j < ans.size(); ++j){
-			taken[ans[j]] = true; // marking all the groups that has been put in the bus already
+			taken[ans[j]] = true; // marking all the groups that has been put in the bus already.
 		}
 		if(done()==true){
-			break; // checking if all the groups are marked, we reached the end then
+			break; // checking if all the groups are marked, if so, we reached the end then.
 		} 
 	}
 	cout << "Buses: ";
