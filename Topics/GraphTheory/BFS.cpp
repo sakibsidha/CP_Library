@@ -14,7 +14,7 @@ void solve(){
 	vector<int> level(n+1,inf);
 	int source = 1;
 	q.push(source);
-	level[source] = 1;
+	level[source] = 0;
 	while(!q.empty()){
 		int v = q.front();
 		q.pop();
