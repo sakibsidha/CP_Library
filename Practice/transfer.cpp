@@ -1,43 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include "debug.h"
+using ll = long long;
+
+int n, m;
+char a[201][201];
+int dp[201][201];
+
+const int inf = 1e9;
+
+int f(int i, int j){
+  if(i%2 == 0){
+		int x = 0;
+		if(j + 1 < m && a[i][j + 1] != '#'){
+			x = (a[i][j + 1] == 'T') ? 1 + f(i, j + 1) : f(i, j + 1);
+		}
+		int y = 0;
+		if(i + 1 < n && a[i + 1][j] != '#'){
+			y = (a[i + 1][j] == 'T') ? 1 + f(i + 1, j) : f(i + 1, j);
+		}
+		return dp[i][j] = max(x, y);
+  }
+  else{
+   	int x = 0;
+    if(j - 1 >= 0 && a[i][j - 1] != '#'){
+    	x = (a[i][j - 1] == 'T') ? 1 + f(i, j - 1) : f(i, j - 1);
+    }
+    int y = 0;
+    if(i + 1 < n && a[i + 1][j] != '#'){
+    	y = (a[i + 1][j] == 'T') ? 1 + f(i + 1, j) : f(i + 1, j);
+    }
+    return dp[i][j] = max(x, y);
+  }
+}
 
 void solve(){
-	int n; cin >> n;
-	int a[n][n];
-	for(int i = 0; i < n; ++i){
-		for(int j = 0; j < n; ++j){
-			cin >> a[i][j];
-		}
-	}
-	for(int i = 0; i < n; ++i){
-		for(int j = i + 1; j < n; ++j){
-			int f = 0;
-			for(int k = 0; k < n; ++k){
-				if(k == i || k == j) continue;
-				else{
-					// debug() << db(i) << db(j) << db(k);
-					cout << "hi";
-					if(a[i][k] + a[k][j] == a[i][j]){
-						f = 1;
-						break;
-					}
-				}
-			}
-			if(f == 0){
-				cout << i + 1 << " " << j + 1 << "\n";
-			}
-		}
-	}
+    cin >> n >> m;
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < m; ++j){
+            cin >> a[i][j];
+            dp[i][j] = 0;
+        }
+    }
+    f(0, 0);
+    int ans = 0;
+    for(int i = 0; i < n; ++i){
+        for(int j = 0; j < m; ++j){
+            ans = max(ans, dp[i][j]);
+        }
+    }
+    cout << ans << "\n";
 }
 
 int main(){
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0); 
 
-	// int tc; cin >> tc;
-	// while(tc--)
-		solve();
+    int tc; cin >> tc;
+    while(tc--)
+        solve();
 
-	return 0;
+    return 0;
 }
