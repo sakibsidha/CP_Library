@@ -2,62 +2,55 @@
 using namespace std;
 using ll = long long;
 
-int n, m;
-char a[201][201];
-int dp[201][201];
+const ll mod = 998244353;
+ll n, k;
+bool mark[1024];
 
-const int inf = 1e9;
+ll f(ll idx, ll mask){
 
-int f(int i, int j){
-  if(i%2 == 0){
-		int x = 0;
-		if(j + 1 < m && a[i][j + 1] != '#'){
-			x = (a[i][j + 1] == 'T') ? 1 + f(i, j + 1) : f(i, j + 1);
-		}
-		int y = 0;
-		if(i + 1 < n && a[i + 1][j] != '#'){
-			y = (a[i + 1][j] == 'T') ? 1 + f(i + 1, j) : f(i + 1, j);
-		}
-		return dp[i][j] = max(x, y);
-  }
-  else{
-   	int x = 0;
-    if(j - 1 >= 0 && a[i][j - 1] != '#'){
-    	x = (a[i][j - 1] == 'T') ? 1 + f(i, j - 1) : f(i, j - 1);
+    ll cur = 0;
+    if(idx > n-k+1){
+        ll new_mask = mask | (1LL << (n-idx+1));
+        if(s[idx] == '?'){
+            cur += (f(idx-1, mask) + f(idx-1, new_mask)) % mod;
+            cur %= mod;
+        } else {
+            cur += (s[idx] == 'A') ? f(idx-1, mask) : f(idx-1, new_mask);
+            cur %= mod;
+        }
+    } else {
+        ll new_mask = 0;
+        if(idx == n-k+1) new_mask = mask | (1LL << (n-idx+1));
+        else{
+            new_mask = 
+        }
     }
-    int y = 0;
-    if(i + 1 < n && a[i + 1][j] != '#'){
-    	y = (a[i + 1][j] == 'T') ? 1 + f(i + 1, j) : f(i + 1, j);
+}
+
+void set(ll l, ll r, ll mask){
+    if(l > r){
+        mark[mask] = true;
+        return;
     }
-    return dp[i][j] = max(x, y);
-  }
+    ll tmp = mask;
+    tmp |= (1LL << l);
+    tmp |= (1LL << r);
+    set(l+1, r-1, tmp);
+    set(l+1, r-1, mask);
 }
 
 void solve(){
-    cin >> n >> m;
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < m; ++j){
-            cin >> a[i][j];
-            dp[i][j] = 0;
-        }
-    }
-    f(0, 0);
-    int ans = 0;
-    for(int i = 0; i < n; ++i){
-        for(int j = 0; j < m; ++j){
-            ans = max(ans, dp[i][j]);
-        }
-    }
-    cout << ans << "\n";
+  cin >> n >> k;
+  set(0, k-1, 0);
+  cout << f(n-1, 0) << "\n";
 }
 
 int main(){
-    ios::sync_with_stdio(0);
-    cin.tie(0); 
+  ios::sync_with_stdio(0);
+  cin.tie(0);
 
-    int tc; cin >> tc;
-    while(tc--)
-        solve();
+  solve();
 
-    return 0;
+  return 0;
 }
+
