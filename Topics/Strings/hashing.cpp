@@ -30,6 +30,13 @@ void pre(){
   }
 }
 
+pair<ll,ll> getHash(string& s){
+  ll hsh1 = 0, hsh2 = 0, n = s.size();
+  for(int i = 0; i < n; ++i) hsh1 = (hsh1 + s[i] * pow_b1[i] % mod1) % mod1;
+  for(int i = 0; i < n; ++i) hsh2 = (hsh2 + s[i] * pow_b2[i] % mod2) % mod2;
+  return {hsh1, hsh2};
+}
+
 vector<pair<ll,ll>> getPrefixHash(string& s){
   ll n = s.size();
   vector<pair<ll,ll>> ret(n);
