@@ -30,28 +30,22 @@ void pre(){
   }
 }
 
-pair<ll,ll> getHash(string& s){
-  ll hsh1 = 0, hsh2 = 0, n = s.size();
-  for(int i = 0; i < n; ++i) hsh1 = (hsh1 + s[i] * pow_b1[i] % mod1) % mod1;
-  for(int i = 0; i < n; ++i) hsh2 = (hsh2 + s[i] * pow_b2[i] % mod2) % mod2;
-  return {hsh1, hsh2};
-}
-
 vector<pair<ll,ll>> getPrefixHash(string& s){
   ll n = s.size();
   vector<pair<ll,ll>> ret(n);
   for(int i = 0; i < n; ++i){
-    if(!i) ret[i].first =  (s[i] * pow_b1[i] % mod1) % mod1;
-    else ret[i].first = (ret[i-1].first +  s[i] * pow_b1[i] % mod1) % mod1;
-  }
-  for(int i = 0; i < n; ++i){
-    if(!i) ret[i].second =  (s[i] * pow_b2[i] % mod2) % mod2;
-    else ret[i].second = (ret[i-1].second +  s[i] * pow_b2[i] % mod2) % mod2;
+    if(!i){
+      ret[i].first =  (s[i] * pow_b1[i] % mod1) % mod1;
+      ret[i].second =  (s[i] * pow_b2[i] % mod2) % mod2;
+    }
+    else{
+      ret[i].first = (ret[i-1].first +  s[i] * pow_b1[i] % mod1) % mod1;
+      ret[i].second = (ret[i-1].second +  s[i] * pow_b2[i] % mod2) % mod2;
+    }
   }
   return ret;
 }
 
-// l, r is 0 indexed
 pair<ll,ll> getSubstrHash(ll l, ll r, vector<pair<ll,ll>>& pf_hash){
   if(l == 0) return pf_hash[r];
   else{
@@ -62,7 +56,7 @@ pair<ll,ll> getSubstrHash(ll l, ll r, vector<pair<ll,ll>>& pf_hash){
     ans.second = (ans.second * invpow_b2[l]) % mod2;
     return ans;
   }
-}  
+} 
 
 void solve(){
   // hash
