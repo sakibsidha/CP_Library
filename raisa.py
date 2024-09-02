@@ -36,3 +36,8 @@ for i in list1:
     if i % 2 == 0:
         sum = sum + i
 print (f"sum of even = {sum}")
+
+lst = [1, 2, 8, 5 , 4, 3]
+for i in range (len(lst)):
+    print(lst[i], end = " ")
+print()
