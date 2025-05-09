@@ -1,5 +1,4 @@
-// credit to fahimcp495
-array<vector<int>, 2> get_sa(string& s, int lim = 128) {  // for integer, just change string to vector<int> and minimum value of vector must be >= 1
+array<vector<int>, 2> get_sa(string& s, int lim = 128) {  
   int n = s.size() + 1, k = 0, a, b;
   vector<int> x(begin(s), end(s)+1), y(n), sa(n), lcp(n), ws(max(n, lim)), rank(n);
   x.back() = 0;
@@ -21,3 +20,5 @@ array<vector<int>, 2> get_sa(string& s, int lim = 128) {  // for integer, just c
   sa.erase(sa.begin()), lcp.erase(lcp.begin());
   return {sa, lcp};
 }
+
+// for integer, change string to vector<int>, lim to length of vector and minimum value of vector must be >= 1
